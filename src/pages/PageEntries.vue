@@ -6,20 +6,71 @@
           v-for="entry in entries"
           :key="entry.id"
         >
-          <q-item-section>
+          <q-item-section
+            class="text-weight-bold"
+            :class="useAmountColorClass(entry.amount)"
+          >
             {{ entry.name }}
           </q-item-section>
-          <q-item-section side>
-            {{ currencify(entry.amount) }}
+
+          <q-item-section
+            class="text-weight-bold"
+            :class="useAmountColorClass(entry.amount)"
+            side
+          >
+            {{ useCurrencify(entry.amount) }}
           </q-item-section>
         </q-item>
       </q-list>
     </div>
+
+    <q-footer
+      class="bg-transparent"
+    >
+      <div class="row q-mb-sm q-px-md q-py-sm shadow-up-3">
+        <div class="col text-grey-7 text-h6">
+          Balance:
+        </div>
+        <div class="col text-grey-7 text-h6 text-right">
+          + $3,999.00
+        </div>
+      </div>
+      <div class="row q-px-sm q-pb-sm q-col-gutter-sm bg-primary">
+        <div class="col">
+          <q-input
+            placeholder="Name"
+            bg-color="white"
+            outlined
+            dense
+          />
+        </div>
+        <div class="col">
+          <q-input
+            input-class="text-right"
+            placeholder="Amount"
+            bg-color="white"
+            type="number"
+            step="0.01"
+            outlined
+            dense
+          />
+        </div>
+        <div class="col col-auto">
+          <q-btn
+            round
+            color="primary"
+            icon="add"
+          />
+        </div>
+      </div>
+    </q-footer>
   </q-page>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import {useCurrencify} from "../use/useCurrencify.js";
+import {useAmountColorClass} from "src/use/useAmountColorClass.js";
 
 const entries = ref([
   {
@@ -43,17 +94,4 @@ const entries = ref([
     amount: 0,
   },
 ])
-
-function currencify(amount) {
-  // format: "+ $ 4,999.99" | "- $ 999.99"
-  const symbol = amount === 0 ? '' : amount > 0 ? '+' : '-'
-  const amountPositive = Math.abs(amount)
-  const currencySymbol = '$'
-  const amountFormatted = amount.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
-
-  return `${symbol} ${currencySymbol} ${amountFormatted}`
-}
 </script>
