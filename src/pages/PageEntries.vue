@@ -31,8 +31,11 @@
         <div class="col text-grey-7 text-h6">
           Balance:
         </div>
-        <div class="col text-grey-7 text-h6 text-right">
-          + $3,999.00
+        <div
+          :class="useAmountColorClass(balance)"
+          class="col text-h6 text-right"
+        >
+          {{ useCurrencify(balance) }}
         </div>
       </div>
       <div class="row q-px-sm q-pb-sm q-col-gutter-sm bg-primary">
@@ -68,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import {useCurrencify} from "../use/useCurrencify.js";
 import {useAmountColorClass} from "src/use/useAmountColorClass.js";
 
@@ -76,7 +79,7 @@ const entries = ref([
   {
     id: 'id1',
     name: 'Salary',
-    amount: 4999.9,
+    amount:   4999.9,
   },
   {
     id: 'id2',
@@ -94,4 +97,10 @@ const entries = ref([
     amount: 0,
   },
 ])
+
+const balance = computed(() => {
+  return entries.value.reduce((accumulator, { amount }) => {
+    return accumulator + amount
+  }, 0)
+})
 </script>
