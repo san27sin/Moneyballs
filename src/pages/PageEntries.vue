@@ -38,9 +38,13 @@
           {{ useCurrencify(balance) }}
         </div>
       </div>
-      <div class="row q-px-sm q-pb-sm q-col-gutter-sm bg-primary">
+      <q-form
+        class="row q-px-sm q-pb-sm q-col-gutter-sm bg-primary"
+        @submit="addEntry"
+      >
         <div class="col">
           <q-input
+            v-model="entry.name"
             placeholder="Name"
             bg-color="white"
             outlined
@@ -49,6 +53,7 @@
         </div>
         <div class="col">
           <q-input
+            v-model="entry.amount"
             input-class="text-right"
             placeholder="Amount"
             bg-color="white"
@@ -63,15 +68,16 @@
             round
             color="primary"
             icon="add"
+            type="submit"
           />
         </div>
-      </div>
+      </q-form>
     </q-footer>
   </q-page>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import {useCurrencify} from "../use/useCurrencify.js";
 import {useAmountColorClass} from "src/use/useAmountColorClass.js";
 
@@ -103,4 +109,17 @@ const balance = computed(() => {
     return accumulator + amount
   }, 0)
 })
+
+const entry = reactive({
+  name: '',
+  amount: null,
+})
+
+function addEntry () {
+  const newEntry = {
+    id: '',
+    name: entry.name,
+    amount: entry.amount,
+  }
+}
 </script>
