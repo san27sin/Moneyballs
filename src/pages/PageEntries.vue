@@ -44,6 +44,7 @@
       >
         <div class="col">
           <q-input
+            ref="nameRef"
             v-model="entry.name"
             placeholder="Name"
             bg-color="white"
@@ -53,7 +54,7 @@
         </div>
         <div class="col">
           <q-input
-            v-model="entry.amount"
+            v-model.number="entry.amount"
             input-class="text-right"
             placeholder="Amount"
             bg-color="white"
@@ -80,6 +81,7 @@
 import { ref, computed, reactive } from 'vue'
 import {useCurrencify} from "../use/useCurrencify.js";
 import {useAmountColorClass} from "src/use/useAmountColorClass.js";
+import {uid} from "quasar";
 
 const entries = ref([
   {
@@ -110,16 +112,25 @@ const balance = computed(() => {
   }, 0)
 })
 
-const entry = reactive({
+const nameRef = ref(null)
+
+const addEntryFormDefault = {
   name: '',
   amount: null,
+}
+
+const entry = reactive({
+  ...addEntryFormDefault
 })
 
-function addEntry () {
-  const newEntry = {
-    id: '',
-    name: entry.name,
-    amount: entry.amount,
-  }
+const addEntryFormReset = () => {
+ Object.assign(entry, addEntryFormDefault)
+  nameRef.value.focus()
+}
+
+const addEntry = () => {
+  const newEntry = Object.assign({}, entry, { id: uid() })
+  entries.value.push(newEntry)
+  addEntryFormReset()
 }
 </script>
