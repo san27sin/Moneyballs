@@ -2,25 +2,34 @@
   <q-page>
     <div class="q-pa-md">
       <q-list>
-        <q-item
+        <q-slide-item
           v-for="entry in entries"
           :key="entry.id"
+          left-color="positive"
+          right-color="negative"
+          @right="onEntrySlideRight"
         >
-          <q-item-section
-            class="text-weight-bold"
-            :class="useAmountColorClass(entry.amount)"
-          >
-            {{ entry.name }}
-          </q-item-section>
+          <template v-slot:right>
+            <q-icon name="delete" />
+          </template>
 
-          <q-item-section
-            class="text-weight-bold"
-            :class="useAmountColorClass(entry.amount)"
-            side
-          >
-            {{ useCurrencify(entry.amount) }}
-          </q-item-section>
-        </q-item>
+          <q-item>
+            <q-item-section
+              class="text-weight-bold"
+              :class="useAmountColorClass(entry.amount)"
+            >
+              {{ entry.name }}
+            </q-item-section>
+
+            <q-item-section
+              class="text-weight-bold"
+              :class="useAmountColorClass(entry.amount)"
+              side
+            >
+              {{ useCurrencify(entry.amount) }}
+            </q-item-section>
+          </q-item>
+        </q-slide-item>
       </q-list>
     </div>
 
@@ -79,9 +88,11 @@
 
 <script setup>
 import { ref, computed, reactive } from 'vue'
-import {useCurrencify} from "../use/useCurrencify.js";
-import {useAmountColorClass} from "src/use/useAmountColorClass.js";
-import {uid} from "quasar";
+import { useCurrencify } from "../use/useCurrencify.js";
+import { useAmountColorClass } from "src/use/useAmountColorClass.js";
+import { uid, useQuasar } from "quasar";
+
+const $q = useQuasar()
 
 const entries = ref([
   {
@@ -132,5 +143,26 @@ const addEntry = () => {
   const newEntry = Object.assign({}, entry, { id: uid() })
   entries.value.push(newEntry)
   addEntryFormReset()
+}
+
+const onEntrySlideRight = () => {
+  $q.dialog({
+    title: 'Delete Entry',
+    message: 'Delete this entry?',
+    persistent: true,
+    ok: {
+      label: 'Delete',
+      color: 'negative',
+      noCaps: true
+    },
+    cancel: {
+      color: 'primary',
+      noCaps: true
+    },
+  }).onOk(() => {
+    console.log('>>>> OK')
+  }).onCancel(() => {
+    console.log('>>>> Cancel')
+  })
 }
 </script>
