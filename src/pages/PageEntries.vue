@@ -7,7 +7,7 @@
           :key="entry.id"
           left-color="positive"
           right-color="negative"
-          @right="onEntrySlideRight"
+          @right="onEntrySlideRight($event, entry)"
         >
           <template v-slot:right>
             <q-icon name="delete" />
@@ -145,10 +145,16 @@ const addEntry = () => {
   addEntryFormReset()
 }
 
-const onEntrySlideRight = () => {
+const onEntrySlideRight = ({ reset }, entry) => {
   $q.dialog({
     title: 'Delete Entry',
-    message: 'Delete this entry?',
+    message: `
+      Delete this entry?
+      <div class="q-mt-md text-weight-bold ${ useAmountColorClass(entry.amount) }">
+        ${ entry.name } : ${ useCurrencify(entry.amount) }
+      </div>
+    `,
+    html: true,
     persistent: true,
     ok: {
       label: 'Delete',
@@ -160,9 +166,18 @@ const onEntrySlideRight = () => {
       noCaps: true
     },
   }).onOk(() => {
-    console.log('>>>> OK')
+    deleteEntry(entry.id)
   }).onCancel(() => {
-    console.log('>>>> Cancel')
+    reset()
+  })
+}
+
+const deleteEntry = (entryId) => {
+  const index = entries.value.findIndex(entry => entry.id === entryId)
+  entries.value.splice(index, 1)
+  $q.notify({
+    message: 'Entry deleted',
+    position: 'top',
   })
 }
 </script>
