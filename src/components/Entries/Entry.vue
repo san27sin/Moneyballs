@@ -57,7 +57,24 @@ const onEntrySlideRight = ({ reset }) => {
         class="text-weight-bold"
         :class="useAmountColorClass(entry.amount)"
       >
-        {{ entry.name }}
+        <q-popup-edit
+          v-model="entry.name"
+          style="opacity: 0.5"
+          auto-save
+          v-slot="scope"
+          :cover="false"
+          anchor="top-left"
+          offset="[16, 12]"
+        >
+          <q-input
+            v-model="scope.value"
+            input-class="text-weight-bold"
+            dense
+            autofocus
+            counter
+            @keyup.enter="scope.set"
+          />
+        </q-popup-edit>
       </q-item-section>
 
       <q-item-section
