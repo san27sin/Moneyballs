@@ -10,9 +10,9 @@
         separator
       >
         <Entry
-          v-for="entry in storeEntries.entries"
+          v-for="(entry, idx) in storeEntries.entries"
           :key="entry.id"
-          :entry="entry"
+          :idx="idx"
         />
       </q-list>
     </div>

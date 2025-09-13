@@ -7,20 +7,15 @@ const storeEntries = useStoreEntries()
 
 const $q = useQuasar()
 
-const props = defineProps({
-  entry: {
-    type: Object,
-    required: true,
-  }
-})
+const { idx } = defineProps(['idx'])
 
 const onEntrySlideRight = ({ reset }) => {
   $q.dialog({
     title: 'Delete Entry',
     message: `
       Delete this entry?
-      <div class="q-mt-md text-weight-bold ${ useAmountColorClass(props.entry.amount) }">
-        ${ props.entry.name } : ${ useCurrencify(props.entry.amount) }
+      <div class="q-mt-md text-weight-bold ${ useAmountColorClass(storeEntries.entries[idx].amount) }">
+        ${ storeEntries.entries[idx].name } : ${ useCurrencify(storeEntries.entries[idx].amount) }
       </div>
     `,
     html: true,
@@ -35,7 +30,7 @@ const onEntrySlideRight = ({ reset }) => {
       noCaps: true
     },
   }).onOk(() => {
-    storeEntries.deleteEntry(props.entry.id)
+    storeEntries.deleteEntry(storeEntries.entries[idx].id)
   }).onCancel(() => {
     reset()
   })
@@ -55,16 +50,15 @@ const onEntrySlideRight = ({ reset }) => {
     <q-item>
       <q-item-section
         class="text-weight-bold"
-        :class="useAmountColorClass(entry.amount)"
+        :class="useAmountColorClass(storeEntries.entries[idx].amount)"
       >
+        {{ storeEntries.entries[idx].name }}
         <q-popup-edit
-          v-model="entry.name"
-          style="opacity: 0.5"
+          v-model="storeEntries.entries[idx].name"
+          style="opacity: 0.9"
           auto-save
           v-slot="scope"
           :cover="false"
-          anchor="top-left"
-          offset="[16, 12]"
         >
           <q-input
             v-model="scope.value"
@@ -79,10 +73,10 @@ const onEntrySlideRight = ({ reset }) => {
 
       <q-item-section
         class="text-weight-bold"
-        :class="useAmountColorClass(entry.amount)"
+        :class="useAmountColorClass(storeEntries.entries[idx].amount)"
         side
       >
-        {{ useCurrencify(entry.amount) }}
+        {{ useCurrencify(storeEntries.entries[idx].amount) }}
       </q-item-section>
     </q-item>
   </q-slide-item>
