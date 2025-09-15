@@ -7,15 +7,28 @@ const storeEntries = useStoreEntries()
 
 const $q = useQuasar()
 
-const { idx } = defineProps(['idx'])
+const { entry } = defineProps({
+  entry: {
+    type: Object,
+    required: true,
+  }
+})
+
+const onNameUpdate = (value) => {
+  storeEntries.updateEntry(entry.id, { name: value })
+}
+
+const onAmountUpdate = (value) => {
+  storeEntries.updateEntry(entry.id, { amount: value })
+}
 
 const onEntrySlideRight = ({ reset }) => {
   $q.dialog({
     title: 'Delete Entry',
     message: `
       Delete this entry?
-      <div class="q-mt-md text-weight-bold ${ useAmountColorClass(storeEntries.entries[idx].amount) }">
-        ${ storeEntries.entries[idx].name } : ${ useCurrencify(storeEntries.entries[idx].amount) }
+      <div class="q-mt-md text-weight-bold ${ useAmountColorClass(entry.amount) }">
+        ${ entry.name } : ${ useCurrencify(entry.amount) }
       </div>
     `,
     html: true,
@@ -30,7 +43,7 @@ const onEntrySlideRight = ({ reset }) => {
       noCaps: true
     },
   }).onOk(() => {
-    storeEntries.deleteEntry(storeEntries.entries[idx].id)
+    storeEntries.deleteEntry(entry.id)
   }).onCancel(() => {
     reset()
   })
@@ -50,22 +63,24 @@ const onEntrySlideRight = ({ reset }) => {
     <q-item>
       <q-item-section
         class="text-weight-bold"
-        :class="useAmountColorClass(storeEntries.entries[idx].amount)"
+        :class="useAmountColorClass(entry.amount)"
       >
-        {{ storeEntries.entries[idx].name }}
+        {{ entry.name }}
         <q-popup-edit
-          v-model="storeEntries.entries[idx].name"
+          :model-value="entry.name"
           style="opacity: 0.9"
           auto-save
+          buttons
+          label-set="Ok"
           v-slot="scope"
           :cover="false"
+          @save="onNameUpdate"
         >
           <q-input
             v-model="scope.value"
-            input-class="text-weight-bold"
+            input-class="text-weight-bold letter-spacing-none"
             dense
             autofocus
-            counter
             @keyup.enter="scope.set"
           />
         </q-popup-edit>
@@ -73,10 +88,28 @@ const onEntrySlideRight = ({ reset }) => {
 
       <q-item-section
         class="text-weight-bold"
-        :class="useAmountColorClass(storeEntries.entries[idx].amount)"
+        :class="useAmountColorClass(entry.amount)"
         side
       >
-        {{ useCurrencify(storeEntries.entries[idx].amount) }}
+        {{ useCurrencify(entry.amount) }}
+        <q-popup-edit
+          :model-value="entry.amount"
+          style="opacity: 0.9"
+          auto-save
+          buttons
+          label-set="Ok"
+          v-slot="scope"
+          :cover="false"
+          @save="onAmountUpdate"
+        >
+          <q-input
+            v-model="scope.value"
+            input-class="text-weight-bold letter-spacing-none"
+            dense
+            autofocus
+            @keyup.enter="scope.set"
+          />
+        </q-popup-edit>
       </q-item-section>
     </q-item>
   </q-slide-item>
