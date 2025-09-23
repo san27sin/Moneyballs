@@ -17,6 +17,8 @@
     "@quasar/extras": "^1.16.4",
     "pinia": "^3.0.2",
     "quasar": "^2.16.0",
+    "sortablejs": "^1.15.6",
+    "sortablejs-vue3": "^1.3.0",
     "vue": "^3.4.18",
     "vue-router": "^4.0.0"
   },

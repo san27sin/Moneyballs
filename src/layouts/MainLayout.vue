@@ -16,6 +16,15 @@
             Денег мало — выиграй с умом
           </div>
         </q-toolbar-title>
+
+        <q-btn
+          v-if="$route.fullPath === '/'"
+          :label="!storeEntries.options.sort ? 'Sort' : 'Done'"
+          flat
+          no-caps
+          dense
+          @click="storeEntries.options.sort = !storeEntries.options.sort"
+        />
       </q-toolbar>
     </q-header>
 
@@ -52,6 +61,9 @@
 <script setup>
 import { ref } from 'vue'
 import Navlinks from 'components/Nav/NavLink.vue'
+import { useStoreEntries } from 'stores/storeEntries.js'
+
+const storeEntries = useStoreEntries()
 
 const navLinks = [
   {
