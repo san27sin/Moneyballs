@@ -3,6 +3,8 @@ import { useQuasar } from "quasar";
 import { useStoreEntries } from "src/stores/storeEntries.js"
 import {useAmountColorClass} from "src/use/useAmountColorClass.js";
 import {useCurrencify} from "src/use/useCurrencify.js";
+import vSelectAll from 'src/directives/directiveSelectAll'
+
 const storeEntries = useStoreEntries()
 
 const $q = useQuasar()
@@ -91,6 +93,7 @@ const onEntrySlideRight = ({ reset }) => {
         >
           <q-input
             v-model="scope.value"
+            v-select-all
             input-class="text-weight-bold letter-spacing-none"
             dense
             autofocus
@@ -120,6 +123,7 @@ const onEntrySlideRight = ({ reset }) => {
         >
           <q-input
             v-model="scope.value"
+            v-select-all
             input-class="text-weight-bold letter-spacing-none"
             dense
             autofocus

@@ -1,6 +1,7 @@
 <script setup>
 import {reactive, ref} from "vue";
 import { useStoreEntries } from "src/stores/storeEntries.js"
+import vSelectAll from 'src/directives/directiveSelectAll'
 
 const storeEntries = useStoreEntries()
 
@@ -34,6 +35,7 @@ const entry = reactive({
       <q-input
         ref="nameRef"
         v-model="entry.name"
+        v-select-all
         placeholder="Name"
         bg-color="white"
         outlined
@@ -43,6 +45,7 @@ const entry = reactive({
     <div class="col">
       <q-input
         v-model.number="entry.amount"
+        v-select-all
         input-class="text-right"
         placeholder="Amount"
         bg-color="white"
