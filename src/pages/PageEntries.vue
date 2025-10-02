@@ -6,13 +6,14 @@
       />
       <q-list
         v-else
-        bordered
-        separator
+        class="entries"
       >
         <Sortable
           :list="storeEntries.entries"
+          :options="options"
           item-key="id"
           tag="div"
+          @end="storeEntries.sortEnd($event)"
         >
           <template #item="{element}">
             <Entry
@@ -42,4 +43,8 @@ import NothingHere from "components/Entries/NothingHere.vue";
 import { Sortable } from "sortablejs-vue3";
 
 const storeEntries = useStoreEntries()
+
+const options = {
+  handle: '.handle'
+}
 </script>

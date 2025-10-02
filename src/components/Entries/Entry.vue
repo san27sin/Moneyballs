@@ -133,6 +133,7 @@ const onEntrySlideRight = ({ reset }) => {
         side
       >
         <q-icon
+          class="handle"
           name="reorder"
           color="primary"
         />
