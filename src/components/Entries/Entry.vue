@@ -15,6 +15,10 @@ const { entry } = defineProps({
   entry: {
     type: Object,
     required: true,
+  },
+  index: {
+    type: Number,
+    required: true,
   }
 })
 
@@ -117,11 +121,14 @@ const promptToDelete = (reset) => {
         class="text-weight-bold"
         :class="[
           useAmountColorClass(entry.amount),
-          { 'text-strike': entry.paid }
         ]"
         side
       >
-        {{ useCurrencify(entry.amount) }}
+        <span
+          :class="{ 'text-strike': entry.paid }"
+        >
+          {{ useCurrencify(entry.amount) }}
+        </span>
         <q-popup-edit
           :model-value="entry.amount"
           style="opacity: 0.9"
@@ -141,6 +148,16 @@ const promptToDelete = (reset) => {
             @keyup.enter="scope.set"
           />
         </q-popup-edit>
+        <q-chip
+          v-if="storeSettings.settings.showRunningBalance"
+          :class="useAmountColorClass(storeEntries.runningBalances[index])"
+          class="running-balance absolute-bottom-right"
+          size="9px"
+          outline
+          dense
+        >
+          {{ useCurrencify(storeEntries.runningBalances[index]) }}
+        </q-chip>
       </q-item-section>
 
       <q-item-section

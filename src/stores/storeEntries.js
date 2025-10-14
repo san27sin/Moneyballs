@@ -49,6 +49,21 @@ export const useStoreEntries = defineStore('entries', () => {
     }, 0)
   })
 
+  const runningBalances = computed(() => {
+    let runningBalances = []
+    let currentRunningBalance = 0
+
+    if (entries.value.length) {
+      entries.value.forEach(entry => {
+        let entryAmount = entry.amount ? entry.amount : 0
+        currentRunningBalance += entryAmount
+        runningBalances.push(currentRunningBalance)
+      })
+    }
+
+    return runningBalances
+  })
+
   // actions
   const addEntry = addEntryForm => {
     const newEntry = Object.assign({}, addEntryForm, {
@@ -86,6 +101,7 @@ export const useStoreEntries = defineStore('entries', () => {
     options,
     balance,
     balancePaid,
+    runningBalances,
     addEntry,
     deleteEntry,
     updateEntry,

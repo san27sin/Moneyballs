@@ -20,10 +20,11 @@
           tag="div"
           @end="storeEntries.sortEnd($event)"
         >
-          <template #item="{element}">
+          <template #item="{ element, index }">
             <Entry
               :key="element.id"
               :entry="element"
+              :index="index"
             />
           </template>
         </Sortable>
