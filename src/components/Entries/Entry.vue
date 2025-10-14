@@ -4,8 +4,10 @@ import { useStoreEntries } from "src/stores/storeEntries.js"
 import {useAmountColorClass} from "src/use/useAmountColorClass.js";
 import {useCurrencify} from "src/use/useCurrencify.js";
 import vSelectAll from 'src/directives/directiveSelectAll'
+import { useStoreSettings } from 'stores/storeSettings.js'
 
 const storeEntries = useStoreEntries()
+const storeSettings = useStoreSettings()
 
 const $q = useQuasar()
 
@@ -30,6 +32,15 @@ const onEntrySlideLeft = ({ reset }) => {
 }
 
 const onEntrySlideRight = ({ reset }) => {
+  if (storeSettings.settings.promptToDelete) {
+    promptToDelete(reset)
+  }
+  else {
+    storeEntries.deleteEntry(entry.id)
+  }
+}
+
+const promptToDelete = (reset) => {
   $q.dialog({
     title: 'Delete Entry',
     message: `
