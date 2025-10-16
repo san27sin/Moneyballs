@@ -87,9 +87,11 @@ const promptToDelete = (reset) => {
       <q-icon name="delete" />
     </template>
 
-    <q-item>
+    <q-item
+      class="row"
+    >
       <q-item-section
-        class="text-weight-bold"
+        class="text-weight-bold col"
         :class="[
           useAmountColorClass(entry.amount),
           { 'text-strike': entry.paid }
@@ -102,6 +104,8 @@ const promptToDelete = (reset) => {
           auto-save
           buttons
           label-set="Ok"
+          anchor="top right"
+          self="right"
           v-slot="scope"
           :cover="false"
           @save="onNameUpdate"
@@ -118,7 +122,7 @@ const promptToDelete = (reset) => {
       </q-item-section>
 
       <q-item-section
-        class="text-weight-bold"
+        class="text-weight-bold relative-position col"
         :class="[
           useAmountColorClass(entry.amount),
         ]"
