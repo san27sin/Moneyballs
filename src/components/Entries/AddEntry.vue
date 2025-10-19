@@ -1,6 +1,7 @@
 <script setup>
 import {reactive, ref} from "vue";
 import { useStoreEntries } from "src/stores/storeEntries.js"
+import { useLightOrDark } from 'src/use/useLightOrDark.js'
 import vSelectAll from 'src/directives/directiveSelectAll'
 
 const storeEntries = useStoreEntries()
@@ -37,7 +38,7 @@ const entry = reactive({
         v-model="entry.name"
         v-select-all
         placeholder="Name"
-        bg-color="white"
+        :bg-color="useLightOrDark('white', 'black')"
         outlined
         dense
       />
@@ -48,6 +49,7 @@ const entry = reactive({
         v-select-all
         input-class="text-right"
         placeholder="Amount"
+        :bg-color="useLightOrDark('white', 'black')"
         bg-color="white"
         type="number"
         step="0.01"

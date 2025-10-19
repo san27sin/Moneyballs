@@ -5,6 +5,7 @@ import {useAmountColorClass} from "src/use/useAmountColorClass.js";
 import {useCurrencify} from "src/use/useCurrencify.js";
 import vSelectAll from 'src/directives/directiveSelectAll'
 import { useStoreSettings } from 'stores/storeSettings.js'
+import { useLightOrDark } from 'src/use/useLightOrDark.js'
 
 const storeEntries = useStoreEntries()
 const storeSettings = useStoreSettings()
@@ -76,7 +77,10 @@ const promptToDelete = (reset) => {
   <q-slide-item
     left-color="positive"
     right-color="negative"
-    :class="{ 'bg-grey-2': entry.paid }"
+    :class="
+        !entry.paid
+          ? useLightOrDark('bg-white', 'bg-black')
+          : useLightOrDark('bg-grey-2', 'bg-grey-10')"
     @left="onEntrySlideLeft"
     @right="onEntrySlideRight"
   >
