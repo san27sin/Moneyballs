@@ -50,7 +50,6 @@ const entry = reactive({
         input-class="text-right"
         placeholder="Amount"
         :bg-color="useLightOrDark('white', 'black')"
-        bg-color="white"
         type="number"
         step="0.01"
         outlined
