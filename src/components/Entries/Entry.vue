@@ -77,6 +77,7 @@ const promptToDelete = (reset) => {
   <q-slide-item
     left-color="positive"
     right-color="negative"
+    :id="`id-${ entry.id }`"
     :class="
         !entry.paid
           ? useLightOrDark('bg-white', 'bg-black')
